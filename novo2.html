@@ -1,0 +1,99 @@
+<?php
+include 'config.php';
+session_start();
+
+if (!isset($_SESSION['loggedin'])) {
+    header('Location: Login.html');
+    exit;
+}
+
+$id = $_GET['id'] ?? '';
+if (!$id) {
+    die('ID do dispositivo não fornecido.');
+}
+
+// Obter dados do dispositivo
+$query = "SELECT * FROM dispositivos WHERE id = ?";
+$stmt = $mysqli->prepare($query);
+$stmt->bind_param('i', $id);
+$stmt->execute();
+$result = $stmt->get_result();
+$device = $result->fetch_assoc();
+$stmt->close();
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // Atualizar dispositivo
+    $name = $_POST['name'];
+    $type = $_POST['type'];
+    $serial_number = $_POST['serial_number'];
+    $provenance = $_POST['provenance'];
+    $allocation = $_POST['allocation'];
+    $entry_date = $_POST['entry_date'];
+    $affiliation = $_POST['affiliation'];
+    $fund = $_POST['fund'];
+    $estado = $_POST['estado'];
+
+    $update_query = "UPDATE dispositivos SET nome = ?, tipo = ?, numero_serie = ?, proveniencia = ?, alocacao = ?, data_entrada = ?, afiliacao = ?, fundo = ?, estado = ? WHERE id = ?";
+    $stmt = $mysqli->prepare($update_query);
+    $stmt->bind_param('sssssssssi', $name, $type, $serial_number, $provenance, $allocation, $entry_date, $affiliation, $fund, $estado, $id);
+
+    if ($stmt->execute()) {
+        header('Location: view.php'); // Redirecionar para a página de listagem
+        exit;
+    } else {
+        echo "Erro: " . $stmt->error;
+    }
+
+    $stmt->close();
+}
+$mysqli->close();
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Dispositivo</title>
+    <link rel="stylesheet" href="../CSS/styles.css">
+</head>
+<body>
+    <div class="form-container">
+        <h2>Editar Dispositivo</h2>
+        <form action="edit.php?id=<?php echo $id; ?>" method="POST">
+            <label for="name">Nome do Dispositivo:</label>
+            <input type="text" id="name" name="name" value="<?php echo htmlspecialchars($device['nome']); ?>" required>
+
+            <label for="type">Tipo:</label>
+            <input type="text" id="type" name="type" value="<?php echo htmlspecialchars($device['tipo']); ?>" required>
+
+            <label for="serial_number">Número de Série:</label>
+            <input type="text" id="serial_number" name="serial_number" value="<?php echo htmlspecialchars($device['numero_serie']); ?>" required>
+
+            <label for="provenance">Proveniência:</label>
+            <input type="text" id="provenance" name="provenance" value="<?php echo htmlspecialchars($device['proveniencia']); ?>" required>
+
+            <label for="allocation">Alocação:</label>
+            <input type="text" id="allocation" name="allocation" value="<?php echo htmlspecialchars($device['alocacao']); ?>" required>
+
+            <label for="entry_date">Data de Entrada:</label>
+            <input type="date" id="entry_date" name="entry_date" value="<?php echo htmlspecialchars($device['data_entrada']); ?>" required>
+
+            <label for="affiliation">Afiliação:</label>
+            <input type="text" id="affiliation" name="affiliation" value="<?php echo htmlspecialchars($device['afiliacao']); ?>" required>
+
+            <label for="fund">Fundo de Aquisição:</label>
+            <input type="text" id="fund" name="fund" value="<?php echo htmlspecialchars($device['fundo']); ?>" required>
+
+            <label for="estado">Status:</label>
+            <select id="estado" name="estado" required>
+                <option value="ativo" <?php echo $device['estado'] === 'ativo' ? 'selected' : ''; ?>>Ativo</option>
+                <option value="inativo" <?php echo $device['estado'] === 'inativo' ? 'selected' : ''; ?>>Inativo</option>
+            </select>
+
+            <button type="submit">Salvar Alterações</button>
+        </form>
+        <br>
+        <a href="view.php" class="btn">Voltar</a>
+    </div>
+</body>
+</html>
