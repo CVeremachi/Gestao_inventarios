@@ -78,4 +78,11 @@ Cadastre novos equipamentos.
 
 - Gere relatórios conforme sua necessidade.
 
-- https://github.com/CVeremachi/Gestao_inventarios/issues/1
+  ![xcvxc](https://github.com/user-attachments/assets/8d8b8a63-d7b3-4499-a44d-ee85a55abb80)
+![uyiuyiy](https://github.com/user-attachments/assets/ab872c97-3603-4f9c-9906-ce563ce2eadf)
+![Untitledw](https://github.com/user-attachments/assets/7cca7a54-704f-4f2a-bd3e-ac9903487466)
+![Untitledqwe](https://github.com/user-attachments/assets/c632be64-294b-43c9-ab42-1174bba082b1)
+![Untitled](https://github.com/user-attachments/assets/055dc9c3-b3ae-4be2-9a72-e68e1c04495b)
+![qweqwe](https://github.com/user-attachments/assets/7e01ab04-0f96-45b2-9788-7ebad38e87db)
+![asd](https://github.com/user-attachments/assets/fd4162b5-2a78-410d-9ab1-06f1b2558089)
+
